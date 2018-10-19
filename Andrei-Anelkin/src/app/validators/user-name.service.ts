@@ -9,13 +9,19 @@ export class UserNameService {
 
   constructor() { }
 
-  static isNameTaken(Name: string): Observable<boolean> {
-    const splittedName = Name.split(' ');
+  static isNameTaken(name: string): Observable<boolean> {
+    const splittedName = name.split(' ');
     const isValid: boolean = UserNameService.isValidName(splittedName);
     return of(isValid).pipe(delay(800));
   }
-  static checkName(Name: string): boolean {
-    const firstCharacter = Name.charAt(0);
+  static checkName(name: string): boolean {
+    const splittedName: string[] = name.split('');
+    for (const char of splittedName ) {
+        if (!this.isLetter(char)) {
+          return false;
+        }
+    }
+    const firstCharacter = name.charAt(0);
     const upperCharacter = firstCharacter.toUpperCase();
     return firstCharacter === upperCharacter;
   }
@@ -30,5 +36,8 @@ export class UserNameService {
       return true;
     }
     return false;
+  }
+  static isLetter(c) {
+    return c.toLowerCase() !== c.toUpperCase();
   }
 }
